@@ -1,0 +1,15 @@
+sample(1000,35)
+#variable: nombre, edad, sexo, tipo de educación
+nom <-c("Sergio", "Alan", "Betzabeth", "Judith", "Rodrigo", "Eric", "Diego", "Angel")
+edad <-c(36, 20, 23, 21, 21, 22, 21)
+sexo <c("Hombre", "Hombre", "Mujer", "Mujer", "Hombre", "Hombre", "Hombre", "Hombre")
+edu <-c("Pública","Pública", "Pública", "Pública", "Pivada", "Pública", "Pública", "Pública"  )
+
+base1<-matriz(c(nombre, edad, sexo, edu)
+base1.1<-data.frame(nom, edad, sexo, edu)
+## vamos a utilizar la función table
+#Se utiliza para conocer la función de varias variables
+table(battach(ase1.1$edad)
+base1.1)#guardar la base
+table(edad)
+summary(base1.1$edad)
