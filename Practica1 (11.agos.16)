@@ -13,3 +13,10 @@ table(battach(ase1.1$edad)
 base1.1)#guardar la base
 table(edad)
 summary(base1.1$edad)
+###importar base de datos###
+###para importar base de datos se utiliza ek paquete###
+###foreign
+install.packages("foreign")
+require (foreign)
+sociodem <- read.dbf ("C://Users//SALA-C10//Desktop//ENOE (microdatos)//SDEMT215.dbf")
+table (sociodem$SEX)
