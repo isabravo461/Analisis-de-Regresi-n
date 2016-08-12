@@ -1,0 +1,58 @@
+##Practica 2
+### para llevar a cabo los ejercicios se utilizan las siguientes bases:
+#SDEMT115.dbf
+
+#0.3 Limpiar el entorno de trabajo
+rm(list = ls())
+# Ctrl + L= Limpiar la consola
+
+###Definir directorio raiz de la base de datos
+setwd("C://Users//SALA-C7//Desktop")
+
+###sociodem <-read.dbf("C://Users//SALA-C7//Desktop//Unegi//SDEMT215.dbf")
+install.packages("foreign")
+require(foreign)
+SDEMT215<-data.frame(read.dbf("SDEMT215.dbf"))
+###rm(sociodem)
+#####explicar la ponderación
+
+#1. Frecuencias
+
+#1.1 Frecuencia con datos muestrales (sin ponderar)
+#Metodo 1
+View (SDEMT215)
+install.packages("questionr")
+require(questionr)
+wtd.table(SDEMT215$POS_OCU)
+wtd.table(SDEMT215$POS_OCU,na.show = TRUE)
+##en el factor de expanción hacen una muestra y sale una persona la variable FAC dice cuantas
+#personas hay con las mismas características.
+
+#1.2 Frecuancia con datos ponderados
+wtd.table(SDEMT215$POS_OCU,weights=SDEMT215$FAC,na.show = TRUE)
+
+##2.1 Tabulados con datos muestrales (sin ponderar)
+#Metodo 1
+wtd.table(SDEMT215$SEX,SDEMT215$POS_OCU)
+
+
+#2.2 Tabulados con datos ponderados
+wtd.table(SDEMT215$SEX,SDEMT215$POS_OCU,weights=SDEMT215$FAC)
+##################  Ejercicio
+#1)obtener la frecuencia de la variablen clase1 (muestral)
+#2) ontener el tabulado de entidad y sexo (muestral y ponderado)
+wtd.table(SDEMT215$CLASE1)
+
+wtd.table(SDEMT215$ENT,SDEMT215$SEX)
+wtd.table(SDEMT215$ENT,SDEMT215$SEX,weights=SDEMT215$FAC) #Ponderados
+
+#3.1 Etiquetar en la misma variable
+SDEMT215$SEXO <- factor(SDEMT215$SEX,levels=c(1,2),labels=c("Hombre","Mujer"))
+wtd.table(SDEMT215$SEX)
+wtd.table(SDEMT215$SEXO)
+View(SDEMT215)
+
+#3.2 Etiquetar en la misma variable
+SDEMT215$POS_OCU <-factor(SDEMT215$POS_OCU,levels = c(1,2,3,4,5),labels = c("Subordinados y remunerados", "Empleadores", "Cuenta propia", "Sin pago", "NE"))
+wtd.table(SDEMT215$POS_OCU)
+View(SDEMT215)
