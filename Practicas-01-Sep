@@ -1,0 +1,75 @@
+
+rm(list=ls())
+
+##### QUEREMOS COMPROBAR LA HIPÓTESIS QUE ENTRE MAYOR INGRESO DE LA FAMILIA
+##### HAY UNA MAYOR ESTATURA EN LOS NIÑOS
+##### CREAR UN VECTORES CON DATOS DE:
+
+##### ESTATURA
+esta <- c(1.2, 1.23, 1.19, 1.32, 1.28, 1.22, 1.17, 1.29, 1.33, 1.15)
+##### NIVEL ECONÓMICO
+niv_eco <- c(110, 130, 108, 167, 156, 115, 104, 138, 170, 107)
+
+##### CREA LA GRÁFICA CON LOS VECTORES ANTERIORES
+##### PRIMERO VA LA PRIMER VARIABLE QUE IRÍA EN EL EJE X (VARIABLE INDEP)
+##### DESPUÉS LA VARIABLE DEPENDIENTE QUE IRÍA EN EL EJE Y
+##### pch=____ (VA UN NÚMERO) DEFINE LA FORMA EN QUE SE VERÁN LOS FUNTITOS
+##### xlab Y ylaB SON LAS ETIQUETAS DE CADA EJE
+##### main ES EL TÍTULO DE LA GRÁFICA
+##### DEFINE EL COLOR DE LOS PUNTITOS
+plot (niv_eco, esta, pch = 1, xlab = "ingreso económico", ylab= "estatura", 
+main = "gráfica de dispersión", col=1:10)
+
+##### AHORA VAMOS A CALCULAR LA CORRELACIÓN ENTRE AMBAS VARIABLES
+##### LA FORMA DE CORRELACIÓN VAMOS A USAR ES DE PEARSON
+help(cor)
+cor(esta, niv_eco, method = "pearson")
+##### COMO ESTA CORRELACIÓN DA 0.9556275 QUIERE DECIR QUE LOS DATOS ESTÁN 
+##### MUY RELACIONADOS Y POSITIVOS
+
+##### AHORA VAMOS A INTENTAR PROBAR LA CORRELACIÓN
+##### LO QUE HACE ES GENERAL UNA PRUEBA DE HIPÓTESIS NULA Ho= r=0 (QUE NO HAY 
+##### RELACIÓN)
+##### Y LA H1= R=!0 (QUE ES DIFERENTE DE 0)
+cor.test(esta, niv_eco, method = "pearson")
+##### si p-value es menor a 0.05 rechazamos Ho
+##### por lo que se acepta la hipótesis alternativa que dice que
+##### sí existe una correlación
+
+##### SE APLICA EL MODELO DE REGRESIÓN LINEAL SIMPLE CON EL QUE 
+##### QUEREMOS LA MEJOR RECTA PARA PODER PRONOSTICAR CÓMO SE PUEDEN COMPORTAR
+##### LAS VARIABLES A FUTURO
+##### mod1 SERÁ EL NOMBRE DEL MODELO QUE NOSOTROS ELEGIMOS
+##### alt+126 para que salga "~" 
+mod1 <- lm(esta~niv_eco)
+
+##### CON SUMMARY SE MANDA LLAMAR EL MODELO
+##### HACE UN ANÁLISIS DE LOS RESIDUALES, DA EL MÍNIMO, EL PRIMER CUARTIL
+##### LA MEDIANA, EL TERCER CUARTIL Y EL MÁXIMO
+summary(mod1)
+
+##### LOS RESIDUALES NOS GENERAN LAS DIFERENCIAS ENTRE LOS VALORES AJSUTADOS
+##### Y LOS REALES EN LOS RESULTADOS TENEMOR LOS COEFICIENTES QUE CONTIENEN
+##### QUE EXPONE SU LOS COEFICIENTES SON SIGNIFICATIVOS
+
+##### ENTRE MAYOR RELACIÓN HAYA MENOR VA A SER LA DISTANCIA ENTRE LOS PUNTOS
+##### Y LA RECTA 
+
+##### LA RECTA QUE VA A AJUSTAR LOS COEFICIENTES ES: y^=Bo^+B1^x
+plot (niv_eco, esta, pch = 2, xlab = "ingreso económico", ylab= "estatura", 
+      main = "gráfica de dispersión", col=1:10)     
+abline(mod1) 
+##### para que nos de la recta ajustada con base en los coeficientes que calculó 
+##### el modelo
+
+##### 
+mod1$coefficients
+
+##### ENTONCES LA ECUACIÓN DE LA RECTA ES
+esta= 0.9323 + 0.0023 niv_eco
+
+##### 1) gráfico de: v. dependiente y v. independiente
+##### 2) método de correlación
+##### 3) se realiza una prueba a la correlación mediante una prueba de hipótesis
+##### 4) aplicar el método de regresión
+##### 5) GENERAR LA RECTA 
