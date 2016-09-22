@@ -1,0 +1,77 @@
+install.packages("car")
+base1<-data.frame(eco,esta)
+
+base1$ajuste.mod1 <- fitted(mod1) ###valores ajustados
+base1$residuales.mod1 <- residuals(mod1)    ###residuos del modelo
+base1$rstudent.mod1 <- rstudent(mod1) #### residuo estudentizados
+
+### Esta variable se utiliza para comprobar los supuestos...
+####Supuestos de normalidad.. es que los residuos tengan una 
+###distribución normal
+###para conocer la normalidad se utiliza
+##la prueva de shapiro para analizar los residuos
+###############residuales.mod1 es y - ^y=e
+
+shapiro.test (base1$rstudent.mod1)
+
+## la prueba de hipotesis shapiro test
+###Ho.la muestra tiene una distribución normal
+###ha : la muestra no tiene distribución normal.
+###tenemos un pvalue de .8172 no se rechaza la hipotesis nula
+###porlo tanto se acepta que hay normalidad...
+###ahora veremos el resultado en un grafico
+qqnorm(base1$rstudent.mod1)
+### ahora vamos a revisar la homogeinedad de varianzas
+###para la homogeneidad se requiere
+### una librería que se llama lmtest, debido a que
+## esta se tiene que aplicar la prueba de Breush- pagan test
+install.packages("lmtest")
+require (lmtest)
+bptest (mod1)
+###en esta prueba esperamos que haya homogeineidad de la varianza
+#     h0: si hay homegeneidad en las varianzas
+#     ha: no hay homogeneidad en las varianzas
+### en la prueva bptest obtenemos un pvalue de .6108
+###por lo tanto no se rechaza la hipotesis nula,
+###es decir se acepta con un 95% de confianza LA h0
+#para esto tenemos que tener un pvalue mayor a .05, por lo que para 
+#mod1 se puede decir que hay homogeneidad en las varianzas
+###prueva de autocorrelación o independencia
+###en este caso se utiliza la prueva DUrbin Watson...
+##para esta prueva se utiliza
+require (car)
+dwtest (mod1, alternative = "two.sided")
+#h0 :  no hay autocorrelación en los residuos
+###las prueva durbin watson genera un resultado de .9142
+##por lo tanto no se rechaza la hipotesis nula
+##devido a que tenemos un pvalue mayor a .05.... esto quiere decir
+###que no hay autocorrelación en los residuos....
+###otra forma de evaluar la prueva de dubin watson es con el valor
+###de durbin watson que se espera que este en elrango de 1.5 a 2,5
+###  si esta dentro de este rango se puede decir que no hay 
+###autocorrelacion en los residuos
+###ahora vamos a comprovar estode manera  grafica
+plot (base1$residuales.mod1, pch= 35, y lab= "residuales", xlab= "in",
+      col = 33)
+abline(h=cor (base1$esta,base1$eco))
+###en este caso se puede ver que tenemos una grafica sin relación que es
+###lo que estamos esperando
+###por lo que se confirma que no hay autorrelacion
+
+###ya con estos datos podrás gerantizar que tenemos un buen modelo
+#y podamos predecir o analizar los coeficientes...
+
+### como les comenté en la clase pasa podríamos
+#tener un problema de rangossi predecimos sin considerar
+#de nuestra variablepor lo que vamos aa
+## definir una nueva base conlos límites
+limbase1 <- seq (min (base1$eco), max (base1$eco), length = 10)
+limbase1 <- data.frame (limbase1)
+limbasep <- predict.lm (mod1, limbase1, interval = "prediction", 
+                        se.fit = TRUE, data = base1)
+head (limbasep$fit)###te genera los limites...
+#para limitar los limites
+matplot(limbase1, limbasep$fit, type = "1", xlab = "ingres",
+        ylab = "estatura")
+#################### TAREA ######################################################
+###investigar como generar etiquetas.....
