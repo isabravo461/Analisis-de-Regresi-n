@@ -1,0 +1,9 @@
+install.packages("foreign")
+require(foreign)
+datos<-read.dbf("C://Users//SALA-C9//Desktop//Base ENOE//base.dbf")
+Coahuila<-subset(datos,datos$ENT=="05")
+Coahuila$SEX<-factor(Coahuila$SEX,levels=c(1,2),labels=c("Hombres","Mujeres"))
+table(Coahuila$SEX)
+
+Coahuila1<- subset(Coahuila, Coahuila$CS_P13_1 == "08") 
+table(Coahuila1$SEX)
