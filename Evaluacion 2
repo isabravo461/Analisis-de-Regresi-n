@@ -1,0 +1,48 @@
+###Isadora Bravo Céspedes 
+###18/11/2016
+install.packages(foreign)
+library(foreign)
+ninrur <- read.spss ("C:\\Users\\Isa\\Downloads\\solorural.sav")
+ninrur<- data.frame (ninrur)
+library (questionr)
+wtd.table (ninrur$sex, weights = ninrur$fac_mti)
+wtd.table (ninrur$eda, weights = ninrur$fac_mti)
+###t_per#####
+ninrocu <- subset(ninrur, ninrur$c_ocu=="ocupado")
+
+####################3
+#t_per~ sex+ eda1 + asis + sex_jefe+ escol_jefe + t_apo1 + ocu_jefe
+table(ninrocu$t_per)#####recodificarla dejar solo 3 categorias...... eliminar
+####1 2 3 4####################3 etiquetar las categorias....
+#####1615 588 75
+table(ninrocu$sex)###correcta
+table (ninrocu$eda1, ninrocu$eda) ##variable que recodificaron ayer
+table(ninrocu$asis)##### correcta revisen este etiqueta
+table(ninrocu$sex_jefe)####recodificar y eliminar los no especificados
+table(ninrocu$escol_jefe)##########recodificar y eliminar los no especificados
+table (ninrocu$t_apo1)###Recodificar y eliminar los no especificados
+table (ninrocu$ocu_jefe)##correcta
+####################   tipo de persona con la qiue trabaja el niño t_per
+install.packages("plyr")
+library(plyr)
+ninrocu$t_per<-revalue(factor(ninrocu$t_per),z("4"=NA))
+table (ninrocu$t_per)
+ninrocu$t_per<-revalue(factor(ninrocu$t_per), c("4"=NA))
+table(ninrocu$t_per)
+ninrocu$t_per <-factor(ninrocu$t_per,levels = c(1,2,3),labels = c("Es un familiar", "No es un familiar", "Trabaja solo o por su cuenta"))
+
+ninrocu$eda1 <-factor(ninrocu$eda1,levels = c(1,2,3),labels = c("5 a 9", "10 a 13", "14 a 17"))
+ninrocu$eda1<-revalue(factor(ninrocu$eda1)), c("1"="5 a 9", "2"="10 a 13", "3"="14 a 17")
+table(ninrocu$eda1)
+
+################### Hasta aqui revisen que todas las variables 
+require(nnet)
+mod1 <- multinom(t_per~1, data=ninrocu, trace=FALSE)
+modfin<- multinom(t_per~sex + eda1 + asis + sex_jefe + escol_jefe + t_apo1 + ocu_jefe, data=ninrocu)
+g<-summary (modfin, wald = T)
+print (g)
+####################### TABLA EN LATEX################################
+install.packages("stargazer")
+library(stargazer)
+s <- stargazer(modfin, type = 'html', title= "Coefficients", summary = T)
+stargazer(modfin, type= "text", title="mlogit", digits=2, out="C:\\Users\\Isa\\Downloads\\PracticaenRSALIDA.txt")
